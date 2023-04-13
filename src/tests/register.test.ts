@@ -3,8 +3,6 @@ import { request } from 'graphql-request';
 import { host } from './constants';
 import { AppDataSource } from '../data-source';
 import { User } from '../entity/User';
-// import { AppD } from "..";
-// import { createConnection } from 'typeorm';
 
 const email = "anas8@gmail.com";
 const password = "anas8";
@@ -20,12 +18,8 @@ test('Test register user', async () => {
     expect(response).toEqual({register: true});
     
     const dataSource = await AppDataSource.initialize();
-    // const dataSource = AppD;
-    // const dataSource = await AppD.initialize();
     const userRepository = dataSource.getRepository(User);
-    // const users = await userRepository.find();
     const users = await userRepository.find( { where: { email }});
-    // console.log("All photos from the db: ", users)
 
     expect(users).toHaveLength(1);
     const user = users[0];
