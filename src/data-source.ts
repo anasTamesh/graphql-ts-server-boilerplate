@@ -4,7 +4,6 @@ import { User } from "./entity/User"
 
 const connType = process.env.NODE_ENV;
 
-
 const prodDataSource: DataSourceOptions = {
     type: "postgres",
     host: "localhost",
