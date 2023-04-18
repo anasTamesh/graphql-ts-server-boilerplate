@@ -19,9 +19,7 @@ export const startServer = async () => {
   const server = createServer(yoga);
   let port = process.env.NODE_ENV === 'test' ? 0 : 4000;
   const conn = await createTypeormConn(); 
-  const app = server.listen({
-    port
-  });
+  const app = server.listen({ port });
   console.info(`Server is running on http://localhost:${port}/graphql`);
   return {app,conn};
 }
