@@ -1,8 +1,11 @@
 import "reflect-metadata"
-import { DataSource } from "typeorm"
+import { DataSource, DataSourceOptions } from "typeorm"
 import { User } from "./entity/User"
 
-export const AppDataSource = new DataSource({
+const connType = process.env.NODE_ENV;
+
+
+const prodDataSource: DataSourceOptions = {
     type: "postgres",
     host: "localhost",
     port: 5432,
@@ -14,8 +17,9 @@ export const AppDataSource = new DataSource({
     entities: [User],
     migrations: [],
     subscribers: [],
-})
-export const AppTestDataSource = new DataSource({
+};
+
+const testDataSource: DataSourceOptions = {
     type: "postgres",
     host: "localhost",
     port: 5432,
@@ -28,4 +32,6 @@ export const AppTestDataSource = new DataSource({
     entities: [User],
     migrations: [],
     subscribers: [],
-})
+};
+
+export const AppDataSource = new DataSource(connType === 'test' ? testDataSource : prodDataSource);
