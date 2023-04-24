@@ -1,14 +1,16 @@
 import "reflect-metadata";
 import { request } from 'graphql-request';
-import { User } from '../entity/User';
+import { User } from '../../entity/User';
 import { DataSource } from "typeorm";
-import { startServer } from "../startServer";
+import { startServer } from "../../startServer";
 import { AddressInfo } from "net";
 import { Server } from "net";
+
 interface AppConn {
   app: Server;
   conn: DataSource;
 }
+
 let appConn: AppConn;
 let getHost = () => "";
 
