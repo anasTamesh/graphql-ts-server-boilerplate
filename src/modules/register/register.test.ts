@@ -44,6 +44,4 @@ test('Test register user', async () => {
     const response2: any = await request(getHost(), mutation);
     expect(response2.register).toHaveLength(1);
     expect(response2.register[0].path).toEqual("email");
-
-    // await appConn.conn.destroy();
 });
