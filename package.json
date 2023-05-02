@@ -35,7 +35,7 @@
    "scripts": {
       "start": "SET NODE_ENV=development& nodemon --exec ts-node src/index.ts",
       "typeorm": "typeorm-ts-node-commonjs",
-      "test": "SET NODE_ENV=test& jest --detectOpenHandles",
+      "test": "SET NODE_ENV=test& jest --forceExit",
       "gen-schema-types": "gql2ts src/schema.graphql -o src/types/schema.d.ts"
    }
 }
