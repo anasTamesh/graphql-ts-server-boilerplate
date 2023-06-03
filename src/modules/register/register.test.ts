@@ -5,6 +5,7 @@ import { DataSource } from "typeorm";
 import { startServer } from "../../startServer";
 import { AddressInfo } from "net";
 import { Server } from "net";
+import { duplicateEmail, emailNotLongEnough, invalidEmail, passwordNotLongEnough } from "./errorMessages";
 
 interface AppConn {
   app: Server;
@@ -23,17 +24,19 @@ beforeAll( async () => {
 const email = "anas@gmail.com";
 const password = "anas";
 
-const mutation = `
+const mutation = (e: string, p: string) => `
 mutation{
-    register(email:"${email}", password: "${password}") {
+    register(email:"${e}", password: "${p}") {
       path
       message
     }
   }
 `;
 
-test('Test register user', async () => {
-    const response = await request(getHost(), mutation);
+describe('A register user', () => {
+  it('Should register a valid user', async () => {
+    // check if we can register a user
+    const response = await request(getHost(), mutation(email, password));
     expect(response).toEqual({register: null });
 
     const users = await User.find( { where: { email }});
@@ -41,7 +44,62 @@ test('Test register user', async () => {
     const user = users[0];
     expect(user.email).toEqual(email);
     expect(user.password).not.toEqual(password);
-    const response2: any = await request(getHost(), mutation);
-    expect(response2.register).toHaveLength(1);
-    expect(response2.register[0].path).toEqual("email");
+  });
+
+  it('should not register a duplicate user', async () => {
+    // check for duplicate emails
+    const response: any = await request(getHost(), mutation(email, password));
+    expect(response.register).toHaveLength(1);
+    expect(response.register[0].path).toEqual("email")
+    expect(response.register[0].message).toEqual(duplicateEmail);
+  });
+  
+  it('should not register a user with an invalid email', async () => {
+    // check for bad email
+    const response: any = await request(getHost(), mutation("em", password));
+    expect(response.register).toHaveLength(2);
+    expect(response.register).toEqual([
+      {
+        path: "email",
+        message: emailNotLongEnough
+      },
+      {
+        path: "email",
+        message: invalidEmail
+      }
+    ]);
+  });
+  
+  it('should not register a user with an invalid password', async () => {
+    // check for bad password
+    const response: any = await request(getHost(), mutation(email, "pa"));
+    expect(response.register).toHaveLength(1);
+    expect(response.register).toEqual([
+      {
+        path: "password",
+        message: passwordNotLongEnough
+      }
+    ]);
+  }); 
+  
+  it('should not register a user with an invalid email and an invalid password', async () => {
+    // check for bad email and bad password
+    const response: any = await request(getHost(), mutation("em", "pa"));
+    expect(response.register).toHaveLength(3);
+    expect(response.register).toEqual([
+      {
+        path: "email",
+        message: emailNotLongEnough
+      },
+      {
+        path: "email",
+        message: invalidEmail
+      },
+      {
+        path: "password",
+        message: passwordNotLongEnough
+      },
+    ]);
+  });
+
 });
