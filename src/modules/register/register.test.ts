@@ -1,28 +1,8 @@
 import "reflect-metadata";
 import { request } from 'graphql-request';
 import { User } from '../../entity/User';
-// import { DataSource } from "typeorm";
-// import { startServer } from "../../startServer";
-// import { AddressInfo } from "net";
-// import { Server } from "net";
 import { duplicateEmail, emailNotLongEnough, invalidEmail, passwordNotLongEnough } from "./errorMessages";
 import { createTypeormConn } from "../../utils/createTypeormConn";
-
-// interface AppConn {
-//   app: Server;
-//   conn: DataSource;
-// }
-
-// let appConn: AppConn;
-// // let getHost = () => "";
-
-// beforeAll( async () => {
-  //   appConn = await startServer();
-  //   const {port} = appConn.app.address() as AddressInfo;
-  //   // process.env.PORT = port.toString();
-  //   // getHost = () => `http://127.0.0.1:${port}/graphql`;
-  //   process.env.TEST_HOST = `http://127.0.0.1:${port}/graphql`;
-  // })
 
 const email = "anas@gmail.com";
 const password = "anas";
