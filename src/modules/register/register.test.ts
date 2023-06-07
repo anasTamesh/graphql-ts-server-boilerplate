@@ -3,6 +3,7 @@ import { request } from 'graphql-request';
 import { User } from '../../entity/User';
 import { duplicateEmail, emailNotLongEnough, invalidEmail, passwordNotLongEnough } from "./errorMessages";
 import { createTypeormConn } from "../../utils/createTypeormConn";
+import { DataSource } from "typeorm";
 
 const email = "anas@gmail.com";
 const password = "anas";
@@ -15,9 +16,14 @@ mutation{
     }
   }
 `;
+let conn: DataSource;
 
 beforeAll( async () => {
-  await createTypeormConn();
+  conn = await createTypeormConn();
+});
+
+afterAll( async () => {
+  await conn.destroy();
 });
 
 describe('A register user', () => {
