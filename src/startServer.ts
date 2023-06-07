@@ -1,6 +1,5 @@
 import * as path from 'path'
 import { createYoga } from 'graphql-yoga'
-// import { createServer } from 'node:http'
 import { createTypeormConn } from './utils/createTypeormConn'
 import { loadFilesSync } from '@graphql-tools/load-files'
 import { mergeResolvers } from '@graphql-tools/merge'
@@ -37,7 +36,6 @@ export const startServer = async () => {
     }
   });
   
-  // const server = createServer(yoga);
   const server = express();
   server.use(yoga.graphqlEndpoint, yoga);
   server.get('/confirm/:id', async (req, res) => {
