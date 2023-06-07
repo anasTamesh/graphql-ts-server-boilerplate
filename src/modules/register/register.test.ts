@@ -1,25 +1,9 @@
 import "reflect-metadata";
 import { request } from 'graphql-request';
 import { User } from '../../entity/User';
-import { DataSource } from "typeorm";
-import { startServer } from "../../startServer";
-import { AddressInfo } from "net";
-import { Server } from "net";
 import { duplicateEmail, emailNotLongEnough, invalidEmail, passwordNotLongEnough } from "./errorMessages";
-
-interface AppConn {
-  app: Server;
-  conn: DataSource;
-}
-
-let appConn: AppConn;
-let getHost = () => "";
-
-beforeAll( async () => {
-  appConn = await startServer();
-  const {port} = appConn.app.address() as AddressInfo;
-  getHost = () => `http://127.0.0.1:${port}/graphql`;
-})
+import { createTypeormConn } from "../../utils/createTypeormConn";
+import { DataSource } from "typeorm";
 
 const email = "anas@gmail.com";
 const password = "anas";
@@ -32,11 +16,20 @@ mutation{
     }
   }
 `;
+let conn: DataSource;
+
+beforeAll( async () => {
+  conn = await createTypeormConn();
+});
+
+afterAll( async () => {
+  await conn.destroy();
+});
 
 describe('A register user', () => {
   it('Should register a valid user', async () => {
     // check if we can register a user
-    const response = await request(getHost(), mutation(email, password));
+    const response = await request(process.env.TEST_HOST as string, mutation(email, password));
     expect(response).toEqual({register: null });
 
     const users = await User.find( { where: { email }});
@@ -48,7 +41,7 @@ describe('A register user', () => {
 
   it('should not register a duplicate user', async () => {
     // check for duplicate emails
-    const response: any = await request(getHost(), mutation(email, password));
+    const response: any = await request(process.env.TEST_HOST as string, mutation(email, password));
     expect(response.register).toHaveLength(1);
     expect(response.register[0].path).toEqual("email")
     expect(response.register[0].message).toEqual(duplicateEmail);
@@ -56,7 +49,7 @@ describe('A register user', () => {
   
   it('should not register a user with an invalid email', async () => {
     // check for bad email
-    const response: any = await request(getHost(), mutation("em", password));
+    const response: any = await request(process.env.TEST_HOST as string, mutation("em", password));
     expect(response.register).toHaveLength(2);
     expect(response.register).toEqual([
       {
@@ -72,7 +65,7 @@ describe('A register user', () => {
   
   it('should not register a user with an invalid password', async () => {
     // check for bad password
-    const response: any = await request(getHost(), mutation(email, "pa"));
+    const response: any = await request(process.env.TEST_HOST as string, mutation(email, "pa"));
     expect(response.register).toHaveLength(1);
     expect(response.register).toEqual([
       {
@@ -84,7 +77,7 @@ describe('A register user', () => {
   
   it('should not register a user with an invalid email and an invalid password', async () => {
     // check for bad email and bad password
-    const response: any = await request(getHost(), mutation("em", "pa"));
+    const response: any = await request(process.env.TEST_HOST as string, mutation("em", "pa"));
     expect(response.register).toHaveLength(3);
     expect(response.register).toEqual([
       {
