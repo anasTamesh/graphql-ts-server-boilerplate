@@ -6,9 +6,9 @@ import { mergeResolvers } from '@graphql-tools/merge'
 import {loadSchema} from '@graphql-tools/load'
 import {GraphQLFileLoader} from '@graphql-tools/graphql-file-loader'
 import { addResolversToSchema } from '@graphql-tools/schema'
-import  Redis  from 'ioredis'
 import express = require('express')
 import { User } from './entity/User'
+import { redis } from './redis'
 
 export const startServer = async () => {
   const schemas = await loadSchema(path.join(__dirname, './modules/**/schema.graphql'), {
@@ -23,8 +23,6 @@ export const startServer = async () => {
     resolvers
   });
   
-  const redis = new Redis();
-
   const yoga = createYoga({
     schema,
     context: request => {
