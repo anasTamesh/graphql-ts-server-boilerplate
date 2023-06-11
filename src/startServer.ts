@@ -29,38 +29,24 @@ export const startServer = async () => {
     schema,
     context: request => {
       const U: URL = new URL( request.request.url);
-      console.log("request.request.url : " + request.request.url);
-      // console.log("U : " + U);
-      // console.log("U.host : " + U.host);
-      // console.log("U.hostname : " + U.hostname);
-      // console.log("U.pathname : " + U.pathname);
-      // console.log("U.href : " + U.href);
-      // console.log("U.origin : " + U.origin);
-      console.log("U.protocol : " + U.protocol);
       return {
         redis,
         url: U.protocol + "//" + U.host
-        // url: U.protocol + "//" + U.host + U.pathname
       }
     },
     landingPage: false
   });
   
   const server = express();
-  console.log("yoga.graphqlEndpoint : " + yoga.graphqlEndpoint )
   server.use(yoga.graphqlEndpoint, yoga);
   server.get('/confirm/:id', async (req, res) => {
     const { id } = req.params;
-    console.log("req.params : " + req.params);
     const userId = await redis.get(id) as string;
-    console.log("userId : " + userId);
     if (userId) {
       await User.update({ id: userId }, { confirmed: true });
       await redis.del(id);
-      console.log("con ok")
       res.send("ok");
     } else {
-      console.log("con inv");
       res.send("invalid");
     }
   });
