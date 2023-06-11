@@ -33,8 +33,7 @@ export const startServer = async () => {
         redis,
         url: U.protocol + "//" + U.host
       }
-    },
-    landingPage: false
+    }
   });
   
   const server = express();
