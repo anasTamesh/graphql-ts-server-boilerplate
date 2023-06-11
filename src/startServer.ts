@@ -7,8 +7,8 @@ import {loadSchema} from '@graphql-tools/load'
 import {GraphQLFileLoader} from '@graphql-tools/graphql-file-loader'
 import { addResolversToSchema } from '@graphql-tools/schema'
 import express = require('express')
-import { User } from './entity/User'
 import { redis } from './redis'
+import { confirmEmail } from './routes/confirmEmail'
 
 export const startServer = async () => {
   const schemas = await loadSchema(path.join(__dirname, './modules/**/schema.graphql'), {
@@ -36,17 +36,7 @@ export const startServer = async () => {
   
   const server = express();
   server.use(yoga.graphqlEndpoint, yoga);
-  server.get('/confirm/:id', async (req, res) => {
-    const { id } = req.params;
-    const userId = await redis.get(id) as string;
-    if (userId) {
-      await User.update({ id: userId }, { confirmed: true });
-      await redis.del(id);
-      res.send("ok");
-    } else {
-      res.send("invalid");
-    }
-  });
+  server.get('/confirm/:id', confirmEmail);
   
   let port = process.env.NODE_ENV === 'test' ? 0 : 4000;
   await createTypeormConn(); 
