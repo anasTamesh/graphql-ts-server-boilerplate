@@ -31,7 +31,7 @@ export const startServer = async () => {
       const U: URL = new URL( request.request.url);
       return {
         redis,
-        url: U.protocol + "://" + U.host
+        url: U.protocol + "//" + U.host
       }
     }
   });
@@ -43,6 +43,7 @@ export const startServer = async () => {
     const userId = await redis.get(id) as string;
     if (userId) {
       await User.update({ id: userId }, { confirmed: true });
+      await redis.del(id);
       res.send("ok");
     } else {
       res.send("invalid");
