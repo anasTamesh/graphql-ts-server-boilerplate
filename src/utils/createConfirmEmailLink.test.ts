@@ -20,8 +20,6 @@ beforeAll(async () => {
 describe("Test createConfirmEmailLink", () => {
     it("confirms user and clears key in redis", async () => {
         const url = await createConfirmEmailLink(process.env.TEST_HOST2 as string, userId, redis);
-        console.log("process.env.TEST_HOST2 : " + process.env.TEST_HOST2);
-        console.log("url in createConfirmEmailLink.test : " + url);
         const response = await fetch(url);
         const text = await response.text();
         expect(text).toEqual("ok");
@@ -32,7 +30,6 @@ describe("Test createConfirmEmailLink", () => {
         const key = urlChunks[urlChunks.length - 1];
         const value = await redis.get(key);
         expect(value).toBeNull();
-        console.log("text : " + text);
     });
 
     it("sends invalid back if a bad id was sent",async () => {
