@@ -348,6 +348,15 @@
     "@gql2ts/util" "^1.9.0"
     dedent "^0.7.0"
 
+"@gql2ts/from-schema@^2.0.0-4":
+  version "2.0.0-4"
+  resolved "https://registry.yarnpkg.com/@gql2ts/from-schema/-/from-schema-2.0.0-4.tgz#9927dd0d991e64101ad443cadee8c47f347f1db9"
+  integrity sha512-dx9OCgL5A6IiDecIFxKyfbpzCsEI6dbyCLlYwQU0dzr+L3IN0YkEIpNtPmO83W1MRZAi34G1AiKZBgbRcT0S9g==
+  dependencies:
+    "@gql2ts/language-typescript" "^2.0.0-0"
+    "@gql2ts/util" "^2.0.0-0"
+    dedent "^0.7.0"
+
 "@gql2ts/language-typescript@^1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@gql2ts/language-typescript/-/language-typescript-1.9.0.tgz#c521e800817d1341552e9c684bca6b64b0abb46f"
@@ -356,10 +365,23 @@
     "@gql2ts/util" "^1.9.0"
     humps "^2.0.0"
 
+"@gql2ts/language-typescript@^2.0.0-0":
+  version "2.0.0-0"
+  resolved "https://registry.yarnpkg.com/@gql2ts/language-typescript/-/language-typescript-2.0.0-0.tgz#733c611a11a1061e7bedde679cd347b37c5cdbe0"
+  integrity sha512-7jxNsQutjQ5rUfOxNZuovUXFldIA5hhIjQh95aJLQIRYKBVDCIceM6QpCCbf1iuhwx4P23jx1kc/4uLsAJHnug==
+  dependencies:
+    "@gql2ts/util" "^2.0.0-0"
+    humps "^2.0.0"
+
 "@gql2ts/util@^1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@gql2ts/util/-/util-1.9.0.tgz#d07a54832757d2f2d1fc9891e5b0e3e3b4886c6a"
   integrity sha512-mkHar7AdyShUFJE6Mlke1tUbb+lPCK1EozZeAhCuRrhQ5aCCBAG6RxzNUYX1Q2jeGeyU0WRAtQu1oE/GoIsNXA==
+
+"@gql2ts/util@^2.0.0-0":
+  version "2.0.0-0"
+  resolved "https://registry.yarnpkg.com/@gql2ts/util/-/util-2.0.0-0.tgz#865599a661042b64da73a35e1d5d0cc52f72a976"
+  integrity sha512-lMUYZZtoo31klzenNvJ4cMYzFbs3T4peT7fSlCAq1EEthbIuXFtrY8aFIa2Y5BdrnhoHFYDgdlYbr3xJ0j1teA==
 
 "@graphql-tools/executor@^0.0.15":
   version "0.0.15"
