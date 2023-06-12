@@ -47,6 +47,6 @@
       "typeorm": "typeorm-ts-node-commonjs",
       "test": "SET NODE_ENV=test& jest --forceExit",
       "dev-test": "SET NODE_ENV=test& jest --watchAll",
-      "gen-schema-types": "gql2ts src/schema.graphql -o src/types/schema.d.ts"
+      "gen-schema-types": "ts-node src/scripts/createTypes.ts"
    }
 }
